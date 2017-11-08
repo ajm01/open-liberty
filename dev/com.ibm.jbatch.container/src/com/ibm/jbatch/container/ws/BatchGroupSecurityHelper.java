@@ -11,8 +11,4 @@ public interface BatchGroupSecurityHelper {
      */
     public List<String> getGroupsForSubject(Subject subject);
 
-    /**
-     * map the config operation group(s) to the job id.
-     */
-    public void mapOperationGroupsToJobID(long jobInstanceId, String[] groupNames, WSJobRepository wsjobRepo);
 }
