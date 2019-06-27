@@ -204,6 +204,8 @@ public abstract class JsonLogHandler implements SynchronousHandler, Formatter {
             return CollectorConstants.TRACE_SOURCE;
         else if (source.equalsIgnoreCase(CollectorConstants.ACCESS_CONFIG_VAL)) {
             return CollectorConstants.ACCESS_LOG_SOURCE;
+        } else if (source.equalsIgnoreCase(CollectorConstants.BATCHJOB_CONFIG_VAL)) {
+            return CollectorConstants.BATCHJOB_LOG_SOURCE;
         } else if (source.equalsIgnoreCase(CollectorConstants.AUDIT_CONFIG_VAL)) {
             return CollectorConstants.AUDIT_LOG_SOURCE;
         }
@@ -222,6 +224,8 @@ public abstract class JsonLogHandler implements SynchronousHandler, Formatter {
             return CollectorConstants.TRACE_SOURCE;
         } else if (sourceName.equals(CollectorConstants.ACCESS_LOG_SOURCE)) {
             return CollectorConstants.ACCESS_LOG_SOURCE;
+        } else if (sourceName.equals(CollectorConstants.BATCHJOB_LOG_SOURCE)) {
+            return CollectorConstants.BATCHJOB_LOG_SOURCE;
         } else if (sourceName.equals(CollectorConstants.FFDC_SOURCE)) {
             return CollectorConstants.FFDC_SOURCE;
         } else if (sourceName.contains(CollectorConstants.AUDIT_LOG_SOURCE)) {

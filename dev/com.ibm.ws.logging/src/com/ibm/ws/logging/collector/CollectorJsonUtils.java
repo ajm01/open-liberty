@@ -16,6 +16,7 @@ import com.ibm.websphere.ras.DataFormatHelper;
 import com.ibm.ws.logging.data.AccessLogData;
 import com.ibm.ws.logging.data.AccessLogDataFormatter;
 import com.ibm.ws.logging.data.AuditData;
+import com.ibm.ws.logging.data.BatchJobLogData;
 import com.ibm.ws.logging.data.FFDCData;
 import com.ibm.ws.logging.data.GCData;
 import com.ibm.ws.logging.data.GenericData;
@@ -79,6 +80,10 @@ public class CollectorJsonUtils {
             } else if (eventType.equals(CollectorConstants.ACCESS_LOG_EVENT_TYPE)) {
 
                 return jsonifyAccess(wlpUserDir, serverName, serverHostName, event, tags);
+
+            } else if (eventType.equals(CollectorConstants.BATCHJOB_LOG_EVENT_TYPE)) {
+
+                return jsonifyBatchJob(wlpUserDir, serverName, serverHostName, event, tags);
 
             } else if (eventType.equals(CollectorConstants.AUDIT_LOG_EVENT_TYPE)) {
 
@@ -241,6 +246,27 @@ public class CollectorJsonUtils {
         }
 
         return jsonBuilder.build().toString();
+    }
+
+    private static String jsonifyBatchJob(String wlpUserDir,
+                                          String serverName, String hostName, Object event, String[] tags) {
+        BatchJobLogData batchJobLogData = (BatchJobLogData) event;
+
+        StringBuilder sb = CollectorJsonHelpers.startBatchJobLogJson(hostName, wlpUserDir, serverName);
+
+        CollectorJsonHelpers.addToJSON(sb, batchJobLogData.getThreadIDKey(), Long.toString(batchJobLogData.getThreadID()), false, true, false, false);
+        CollectorJsonHelpers.addToJSON(sb, batchJobLogData.getBatchMessageKey(), batchJobLogData.getBatchMessage(), false, true, false, false);
+
+        String datetime = CollectorJsonHelpers.dateFormatTL.get().format(batchJobLogData.getDatetime());
+        CollectorJsonHelpers.addToJSON(sb, batchJobLogData.getDatetimeKey(), datetime, false, true, false, false, false);
+
+        if (tags != null) {
+            addTagNameForVersion(sb).append(CollectorJsonHelpers.jsonifyTags(tags));
+        }
+
+        sb.append("}");
+
+        return sb.toString();
     }
 
     public static String jsonifyAudit(String wlpUserDir, String serverName, String hostName, Object event, String[] tags) {
